@@ -23,7 +23,7 @@
   --color-natural-800: #2e2e1e;
   --color-natural-900: #1a1a11;
 
-  /* Polices de caractères */
+  /* Polices de caractères – version corrigée */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
@@ -38,4 +38,18 @@
   h1, h2, h3, h4 {
     @apply font-display;
   }
+}
+
+/* Animation de zoom lent pour la section Héro */
+@keyframes zoom-slow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-zoom-slow {
+  animation: zoom-slow 20s ease-in-out infinite alternate;
 }
