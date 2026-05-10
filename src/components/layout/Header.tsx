@@ -97,7 +97,7 @@ const Header: React.FC = () => {
               <svg className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              <span className="hidden xl:inline">+32 470 00 00 00</span>
+              <span className="hidden xl:inline">+32494679682</span>
             </a>
             <Button variant="primary" size="sm" to="/contact" className="flex-shrink-0 shadow-md hover:shadow-lg">
               <span className="mr-1.5">📋</span> Devis gratuit
@@ -109,7 +109,7 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-2 lg:hidden">
           {/* WhatsApp mobile discret */}
           <a
-            href="https://wa.me/32470000000"
+            href="https://wa.me/32494679682"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-9 h-9 bg-green-500 text-white rounded-full shadow-md hover:shadow-lg transition-shadow"
