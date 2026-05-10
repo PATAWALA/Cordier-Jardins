@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import SectionHeading from '../components/ui/SectionHeading';
 import StarRating from '../components/ui/StarRating';
 
+
 const AboutPage: React.FC = () => {
   return (
     <>
@@ -30,7 +31,7 @@ const AboutPage: React.FC = () => {
           </div>
           <div>
             <img
-              src="/equipe.jpg"
+              src="/images/equipe.jpg"
               alt="L'équipe Cordier Jardins"
               className="rounded-2xl shadow-xl w-full h-auto object-cover"
             />

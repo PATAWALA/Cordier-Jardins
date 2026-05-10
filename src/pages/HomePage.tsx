@@ -7,6 +7,7 @@ import WhyChooseUsSection from '../components/sections/WhyChooseUsSection';
 import TestimonialsSection from '../components/sections/TestimonialsSection';
 import QuickQuoteSection from '../components/sections/QuickQuoteSection';
 import FaqSection from '../components/sections/FaqSection';
+import AboutPreviewSection from '../components/sections/AboutPreviewSection';
 
 const HomePage: React.FC = () => {
   return (
@@ -42,6 +43,7 @@ const HomePage: React.FC = () => {
       <SocialProofSection />
       <BeforeAfterSection />
       <ServicesPreviewSection />
+      <AboutPreviewSection /> 
       <WhyChooseUsSection />
       <TestimonialsSection />
       <QuickQuoteSection />
