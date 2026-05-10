@@ -50,6 +50,11 @@ const BeforeAfterCard: React.FC<{
     setSliderPosition(Math.min(100, Math.max(0, percent)));
   };
 
+  // sliderPosition élevé (curseur à droite) → on voit AVANT en grand → badge AVANT
+  // sliderPosition faible (curseur à gauche) → on voit APRÈS en grand → badge APRÈS
+  const showAvant = sliderPosition >= 50;
+  const showApres = sliderPosition < 50;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -101,13 +106,21 @@ const BeforeAfterCard: React.FC<{
           />
         </div>
 
-        {/* Badge AVANT – placé sur le conteneur parent, à gauche */}
-        <span className="absolute top-3 left-3 bg-black/60 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm z-30 pointer-events-none">
+        {/* Badge AVANT – visible quand sliderPosition >= 50 (curseur à droite) */}
+        <span
+          className={`absolute top-3 left-3 bg-black/60 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm z-30 pointer-events-none transition-opacity duration-300 ${
+            showAvant ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           AVANT
         </span>
 
-        {/* Badge APRÈS – placé sur le conteneur parent, à droite */}
-        <span className="absolute top-3 right-3 bg-black/60 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm z-30 pointer-events-none">
+        {/* Badge APRÈS – visible quand sliderPosition < 50 (curseur à gauche) */}
+        <span
+          className={`absolute top-3 right-3 bg-black/60 text-white text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm z-30 pointer-events-none transition-opacity duration-300 ${
+            showApres ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           APRÈS
         </span>
 
