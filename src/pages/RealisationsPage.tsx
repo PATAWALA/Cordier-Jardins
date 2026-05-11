@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import SectionHeading from '../components/ui/SectionHeading';
+import Button from '../components/ui/Button';
 import { motion, AnimatePresence } from 'framer-motion';
 
-type Category = 'tous' | 'realisation' | 'equipe'; // 'realisation' sans 's' pour coller aux données
+type Category = 'tous' | 'realisation' | 'equipe';
 
 interface Project {
   id: number;
@@ -11,7 +13,7 @@ interface Project {
   description?: string;
   image: string;
   location: string;
-  category: 'realisation' | 'equipe'; // projets finalisés ou équipe en action
+  category: 'realisation' | 'equipe';
 }
 
 const projects: Project[] = [
@@ -97,7 +99,6 @@ const RealisationsPage: React.FC = () => {
     ? projects
     : projects.filter(p => p.category === filter);
 
-  // Navigation dans la lightbox
   const currentIndex = lightboxOpen
     ? filteredProjects.findIndex(p => p.id === lightboxOpen.id)
     : -1;
@@ -123,11 +124,11 @@ const RealisationsPage: React.FC = () => {
             subtitle="Des projets aboutis aux gestes de nos artisans, une passion visible à chaque étape"
           />
 
-          {/* Filtres sophistiqués */}
+          {/* Filtres */}
           <div className="flex justify-center gap-3 mb-12">
             {([
               { key: 'tous' as Category, label: 'Tous' },
-              { key: 'realisation' as Category, label: 'Projets réalisés' },  // clé corrigée
+              { key: 'realisation' as Category, label: 'Projets réalisés' },
               { key: 'equipe' as Category, label: "L'équipe en action" },
             ]).map(({ key, label }) => (
               <button
@@ -155,10 +156,9 @@ const RealisationsPage: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  className="group cursor-pointer rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300 bg-white relative"
-                  onClick={() => setLightboxOpen(project)}
+                  className="group rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 bg-white relative"
                 >
-                  <div className="relative overflow-hidden">
+                  <div className="relative overflow-hidden cursor-pointer" onClick={() => setLightboxOpen(project)}>
                     <img
                       src={project.image}
                       alt={project.title}
@@ -174,16 +174,31 @@ const RealisationsPage: React.FC = () => {
                     >
                       {project.category === 'realisation' ? 'Réalisé' : 'En action'}
                     </span>
-                    {/* Overlay au survol (desktop) */}
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <span className="text-white text-sm font-semibold bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                        Voir en grand
-                      </span>
+                    {/* Overlay au survol */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3">
+                      <button
+                        className="text-white text-sm font-semibold bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLightboxOpen(project);
+                        }}
+                      >
+                        🔍 Voir en grand
+                      </button>
+                      {project.category === 'realisation' && (
+                        <Link
+                          to="/contact"
+                          className="text-white text-sm font-semibold bg-primary-500/90 backdrop-blur-sm px-4 py-2 rounded-full hover:bg-primary-600 transition-colors"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          📋 Je veux le même
+                        </Link>
+                      )}
                     </div>
                   </div>
                   <div className="p-5">
                     <h3 className="text-lg font-semibold text-natural-800 mb-1">{project.title}</h3>
-                    <div className="flex items-center text-sm text-natural-500">
+                    <div className="flex items-center text-sm text-natural-500 mb-2">
                       <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -191,9 +206,21 @@ const RealisationsPage: React.FC = () => {
                       {project.location}
                     </div>
                     {project.description && (
-                      <p className="mt-2 text-sm text-natural-500 leading-relaxed line-clamp-2">
+                      <p className="text-sm text-natural-500 leading-relaxed line-clamp-2 mb-3">
                         {project.description}
                       </p>
+                    )}
+                    {/* CTA dans la carte pour projets réalisés */}
+                    {project.category === 'realisation' && (
+                      <Link
+                        to="/contact"
+                        className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors group/link"
+                      >
+                        <span>Demander un devis similaire</span>
+                        <svg className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </Link>
                     )}
                   </div>
                 </motion.div>
@@ -201,10 +228,29 @@ const RealisationsPage: React.FC = () => {
             </AnimatePresence>
           </motion.div>
 
-          {/* Aucun projet */}
           {filteredProjects.length === 0 && (
             <p className="text-center text-natural-400 mt-8">Aucun projet dans cette catégorie pour le moment.</p>
           )}
+
+          {/* CTA Global */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-16 text-center bg-natural-50 rounded-2xl p-8 md:p-12"
+          >
+            <h3 className="text-2xl font-bold text-natural-800 mb-3">
+              Prêt à avoir le jardin de vos rêves ?
+            </h3>
+            <p className="text-natural-500 mb-6 max-w-lg mx-auto">
+              Comme ces clients, offrez-vous un extérieur qui vous ressemble. Devis gratuit en 48h.
+            </p>
+            <Link to="/contact">
+              <Button variant="primary" size="lg">
+                <span className="mr-2">📋</span> Demander mon devis gratuit
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -225,10 +271,22 @@ const RealisationsPage: React.FC = () => {
                 alt={lightboxOpen.title}
                 className="w-full h-auto max-h-[80vh] object-contain rounded-xl shadow-2xl"
               />
-              <div className="absolute bottom-4 left-4 right-4 text-white bg-black/50 backdrop-blur-md rounded-lg px-4 py-3">
-                <h3 className="font-semibold text-lg">{lightboxOpen.title}</h3>
-                <p className="text-sm opacity-80">{lightboxOpen.description}</p>
+              {/* Infos + CTA dans la lightbox */}
+              <div className="absolute bottom-4 left-4 right-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-white bg-black/50 backdrop-blur-md rounded-lg px-5 py-4">
+                <div>
+                  <h3 className="font-semibold text-lg">{lightboxOpen.title}</h3>
+                  <p className="text-sm opacity-80">{lightboxOpen.description}</p>
+                </div>
+                {lightboxOpen.category === 'realisation' && (
+                  <Link
+                    to="/contact"
+                    className="bg-primary-500 hover:bg-primary-600 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors whitespace-nowrap text-sm"
+                  >
+                    📋 Je veux le même
+                  </Link>
+                )}
               </div>
+              {/* Fermer */}
               <button
                 className="absolute top-4 right-4 text-white/80 hover:text-white bg-black/40 rounded-full p-2"
                 onClick={() => setLightboxOpen(null)}
@@ -238,6 +296,7 @@ const RealisationsPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
+              {/* Navigation */}
               {filteredProjects.length > 1 && (
                 <>
                   <button
